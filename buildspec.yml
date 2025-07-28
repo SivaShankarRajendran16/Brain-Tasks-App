@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password | docker login --username AWS --password-stdin <your-ecr-repo-url>
+  build:
+    commands:
+      - echo Build started on `date`
+      - docker build -t brain-tasks-app .
+      - docker tag brain-tasks-app <your-ecr-repo-url>:latest
+  post_build:
+    commands:
+      - docker push <your-ecr-repo-url>:latest
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - appspec.yml
+    - k8s/*.yaml
