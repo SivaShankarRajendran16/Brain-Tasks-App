@@ -4,17 +4,27 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password | docker login --username AWS --password-stdin <your-ecr-repo-url>
+      - aws --version
+      - REPO_URI=365998109313.dkr.ecr.ap-south-1.amazonaws.com/braintaskapp
+      - echo $REPO_URI
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPO_URI
+      - IMAGE_TAG=latest
   build:
     commands:
-      - echo Build started on `date`
-      - docker build -t brain-tasks-app .
-      - docker tag brain-tasks-app <your-ecr-repo-url>:latest
+      - echo Building the Docker image...
+      - docker build -t $REPO_URI:$IMAGE_TAG .
   post_build:
     commands:
-      - docker push <your-ecr-repo-url>:latest
-      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $REPO_URI:$IMAGE_TAG
+      # add your container name
+      - DOCKER_CONTAINER_NAME=braintaskapp
+      - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo $DOCKER_CONTAINER_NAME
+      - echo printing imagedefinitions.json
+      - cat imagedefinitions.json
+
 artifacts:
   files:
-    - appspec.yml
-    - k8s/*.yaml
+    - '**/*'
+
