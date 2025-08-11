@@ -16,5 +16,3 @@ phases:
       - echo Pushing the Docker image...
       - docker push 365998109313.dkr.ecr.ap-south-1.amazonaws.com/brain-tasks-app:latest
       - echo Build completed on `date`
-
-
