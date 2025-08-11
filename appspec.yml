@@ -1,6 +1,10 @@
 version: 0.0
-resources:
-  - kubernetes:
-      manifest: "k8s/deployment.yaml"
-  - kubernetes:
-      manifest: "k8s/service.yaml"
+os: linux
+files:
+  - source: /
+    destination: /tmp
+hooks:
+  AfterInstall:
+    - location: scripts/deploy.sh
+      timeout: 300
+      runas: root
