@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mind-task-container
-        image: public.ecr.aws/y6y5u8d9/mind-task-app:latest
+        image: 365998109313.dkr.ecr.us-east-1.amazonaws.com/brain-task-app:latest
         ports:
         - containerPort: 80
 
