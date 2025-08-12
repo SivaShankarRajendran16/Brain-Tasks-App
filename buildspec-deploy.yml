@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing kubectl and AWS CLI..."
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.29.0/2024-05-01/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl && mv ./kubectl /usr/local/bin
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip && ./aws/install
+  pre_build:
+    commands:
+      - echo "Updating kubeconfig for EKS..."
+      - aws eks update-kubeconfig --region ap-south-1 --name brain-cluster
+  build:
+    commands:
+      - echo "Deploying manifests..."
+      - kubectl apply -f k8s/deployment.yaml
+      - kubectl apply -f k8s/service.yaml
+      - echo "Checking rollout status..."
+      - kubectl rollout status deployment/brain-tasks-deployment
