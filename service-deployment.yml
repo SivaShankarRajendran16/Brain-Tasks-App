@@ -1,1 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mind--deployment
+  labels:
+    app: mind-task
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mind-task
+  template:
+    metadata:
+      labels:
+        app: mind-task
+    spec:
+      containers:
+      - name: mind-task-container
+        image: public.ecr.aws/y6y5u8d9/mind-task-app:latest
+        ports:
+        - containerPort: 80
 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mind-task-service
+spec:
+  selector:
+    app: mind-task
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    
