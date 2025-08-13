@@ -63,11 +63,6 @@ phases:
       - echo Pushing the Docker image...
       - docker push $ECR_URI:$IMAGE_TAG
       - echo Writing image definition file...
-      - printf '{"imageUri":"%s"}' "$ECR_URI:$IMAGE_TAG" > imageDetail.json
-artifacts:
-  files:
-    - imageDetail.json
-    - service-deployment.yml
 
 
 
