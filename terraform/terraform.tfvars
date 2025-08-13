@@ -1,5 +1,0 @@
-aws_region   = "us-east-1"
-project_name = "brain-task"
-cluster_name = "brain-task-eks"
-key_name     = "your-ec2-keypair-name"
-instance_type = "t3.medium"
